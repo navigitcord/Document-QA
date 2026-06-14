@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document QA App</title>
+</head>
+<body>
+
+    <h1>Document Q&A System</h1>
+
+    <h2>Upload PDFs</h2>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="pdfs"
+            multiple
+            accept=".pdf"
+        >
+
+        <button type="submit">
+            Upload
+        </button>
+
+    </form>
+
+    {% if upload_success %}
+
+        <p>
+            Documents processed successfully.
+        </p>
+
+        <p>
+            Total chunks: {{ total_chunks }}
+        </p>
+
+    {% endif %}
+
+    <hr>
+
+    <h2>Ask Question</h2>
+
+    <form action="/ask" method="POST">
+
+        <input
+            type="text"
+            name="question"
+            style="width:500px;"
+            required
+        >
+
+        <button type="submit">
+            Ask
+        </button>
+
+    </form>
+
+    {% if answer %}
+
+        <h3>Answer</h3>
+
+        <p>{{ answer }}</p>
+
+        <h3>Citations</h3>
+
+        <ul>
+
+        {% for citation in citations %}
+
+            <li>
+                {{ citation.source }}
+                (Page {{ citation.page }})
+            </li>
+
+        {% endfor %}
+
+        </ul>
+
+    {% endif %}
+
+    {% if error %}
+
+        <p>{{ error }}</p>
+
+    {% endif %}
+
+</body>
+</html>

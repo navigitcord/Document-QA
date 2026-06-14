@@ -1,0 +1,13 @@
+flask
+python-dotenv
+
+google-genai
+sentence-transformers
+faiss-cpu
+
+langchain
+langchain-text-splitters
+
+pypdf
+
+numpy
