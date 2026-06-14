@@ -16,7 +16,7 @@ def extract_pdf_text(pdf_path):
     ]
     """
 
-    reader = PdfReader("JD Engineer AIML.pdf")
+    reader = PdfReader(pdf_path)
 
     pages = []
 
