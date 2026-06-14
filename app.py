@@ -42,29 +42,38 @@ def home():
 @app.route( "/upload", methods=["POST"])
 def upload():
     # Get Files
-    files = request.files.getlist(
-        "pdfs"
-    )
-    #Validate
-    if not files:
-        return "No files uploaded"
-    
-    print("Upload route called")
-    print(f"Files uploaded: {len(files)}")
+    files = request.files.getlist("pdfs")
+
+    # Validate files uploaded
+    if not files or all(file.filename == "" for file in files):
+        return render_template(
+            "index.html",
+            error="Please upload at least one PDF."
+        )
+
+    # Assignment requirement: 1-3 PDFs
+    if len(files) > 3:
+        return render_template(
+            "index.html",
+            error="Maximum 3 PDF files are allowed."
+        )
     #Process PDFs
     all_chunks = []
 
     for file in files:
 
+        # PDF File Validation
+        if not file.filename.lower().endswith(".pdf"):
+            return render_template(
+                "index.html",
+                error=f"{file.filename} is not a PDF file."
+            )
         filepath = os.path.join(
             UPLOAD_FOLDER,
             file.filename
         )
-
+        
         file.save(filepath)
-
-        if not file.filename.endswith(".pdf"):
-            return "Only PDF files are supported."
 
         pages = extract_pdf_text(
             filepath
@@ -112,8 +121,8 @@ def upload():
 methods=["POST"]
 )
 def ask():
-    print("Ask route called")
-    print(vector_store)
+    # print("Ask route called")
+    # print(vector_store)
     # Validation
     if vector_store is None:
 
